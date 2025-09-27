@@ -1,0 +1,35 @@
+{
+  "name": "eslint-plugin",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/eslint-plugin/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/eslint-plugin",
+        "main": "libs/eslint-plugin/src/index.ts",
+        "tsConfig": "libs/eslint-plugin/tsconfig.lib.json",
+        "assets": ["libs/eslint-plugin/*.md"],
+        "additionalEntryPoints": [
+          "libs/eslint-plugin/src/configs/flat-config.ts"
+        ],
+        "generateExportsField": true
+      }
+    },
+    "nx-release-publish": {
+      "options": {
+        "packageRoot": "dist/{projectRoot}"
+      }
+    }
+  },
+  "tags": [],
+  "release": {
+    "version": {
+      "manifestRootsToUpdate": ["dist/{projectRoot}"],
+      "currentVersionResolver": "git-tag",
+      "fallbackCurrentVersionResolver": "disk"
+    }
+  }
+}
