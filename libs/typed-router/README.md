@@ -186,8 +186,6 @@ Keep the augmentation in a `.d.ts` that is included by `tsconfig.app.json` (`inc
 
 You can use `angular-typed-router-eslint` plugin to forbid untyped navigation calls.
 
-```bash
-
 ## Troubleshooting
 
 | Symptom | Fix |
