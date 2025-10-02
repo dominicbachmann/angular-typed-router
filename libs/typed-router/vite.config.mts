@@ -20,6 +20,9 @@ export default defineConfig(() => ({
       reportsDirectory: '../../coverage/libs/typed-router',
       provider: 'v8' as const,
     },
+    typecheck: {
+      enabled: true,
+    },
     browser: {
       enabled: true,
       name: 'chromium',

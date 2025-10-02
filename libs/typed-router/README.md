@@ -49,6 +49,11 @@ declare module 'angular-typed-router' {
   interface UserTypedRoutes {
     routes: typeof appRoutes;
   }
+  // Customize route param types here
+  interface AllowedRouteParamValues {
+    ids: `${number}`;
+    // other params...
+  }
 }
 ```
 
@@ -177,8 +182,6 @@ Keep the augmentation in a `.d.ts` that is included by `tsconfig.app.json` (`inc
 
 | Concern | Status / Rationale                                                                    |
 |---------|---------------------------------------------------------------------------------------|
-| Restrict param values (non-empty) | Not enforced; doing so significantly worsens DX (would reject plain `string` vars).   |
-| Trailing slashes | Not generated unless authored; currently no auto-normalization.                       |
 | `relativeTo` (relative navigation) | Not supported – all inferred `Path` / `Commands` are absolute. Use absolute commands. |
 
 
@@ -192,7 +195,6 @@ You can use `angular-typed-router-eslint` plugin to forbid untyped navigation ca
 |---------|-----|
 | `Path` is `never` | Check augmentation file is included in tsconfig. |
 | Lazy children missing | Ensure promise resolves to `Route[]` or `{ routes: Route[] }`. |
-| Template error: unknown routerLink type | Ensure `TypedRouterLink` directive is imported (standalone). |
 
 ## Contributing
 

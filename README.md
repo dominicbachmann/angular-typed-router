@@ -1,14 +1,8 @@
 # Angular Typed Router
 
-## Request for feedback
-Due to a current TypeScript limitation, route parameter values are inferred only as string, which is not ideal. Two possible approaches (both hurt DX):
-- Turn each route param into a union of allowable characters. Clients could extend the character set via module augmentation, but this forces explicit type checks or `as` annotations at usage sites.
-- Introduce a branded RouteParam<T> wrapper to enable inference of the underlying type. This also requires explicit narrowing/annotation in user code.
-If you have any ideas on how to solve this problem without hurting DX, please let me know.
----
-This is an early release. Please try it out and file issues.
-
 Type-safe navigation for Angular. One source of truth (your `Routes` array) → inferred `Path` union + strongly typed `navigate` command tuples. No codegen, no runtime cost, just TypeScript.
+
+This is an early release. Please try it out and file issues.
 
 > Full docs & deep dive: [libs/typed-router/README.md](./libs/typed-router/README.md)
 
@@ -20,7 +14,7 @@ Type-safe navigation for Angular. One source of truth (your `Routes` array) → 
 - Drop-in: keep your existing routing setup
 
 ## Features
-- `Path` – union of every concrete reachable URL (incl. params as `string`)
+- `Path` – union of every concrete reachable URL
 - `Commands` – typed tuples for `router.navigate([...])`
 - `TypedRouter` – typed `navigate` / `navigateByUrl` / `createUrlTree`
 - `TypedRouterLink` – typed `[routerLink]` in templates
@@ -47,6 +41,11 @@ import type { appRoutes } from './app/app.routes';
 declare module 'angular-typed-router' {
   interface UserTypedRoutes {
     routes: typeof appRoutes;
+  }
+  // Customize route param types here
+  interface AllowedRouteParamValues {
+    ids: `${number}`;
+    // other params...
   }
 }
 ```
