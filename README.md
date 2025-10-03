@@ -14,6 +14,7 @@ This is an early release. Please try it out and file issues. 🚧
 ## Features
 - 📍 `Path` – union of every concrete reachable URL
 - 🧩 `Commands` – typed tuples for `router.navigate([...])`
+- 💡 Get auto-completion for paths and commands
 - 🚀 `TypedRouter` – typed `navigate` / `navigateByUrl` / `createUrlTree`
 - 🔗 `TypedRouterLink` – typed `[routerLink]` in templates
 - 🪄 It's all zero-runtime-weight types and interfaces, no code generation, no decorators, no custom builders
