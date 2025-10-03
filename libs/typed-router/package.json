@@ -2,8 +2,8 @@
   "name": "angular-typed-router",
   "version": "0.1.0",
   "peerDependencies": {
-    "@angular/common": "^20.2.0",
-    "@angular/core": "^20.2.0"
+    "@angular/common": "^20.0.0",
+    "@angular/core": "^20.0.0"
   },
   "sideEffects": false
 }
