@@ -5,5 +5,10 @@
     "@angular/common": "^20.0.0",
     "@angular/core": "^20.0.0"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dominicbachmann/angular-typed-router.git",
+    "directory": "libs/typed-router"
+  },
   "sideEffects": false
 }

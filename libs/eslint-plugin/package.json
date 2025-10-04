@@ -4,6 +4,11 @@
   "type": "commonjs",
   "main": "./src/index.js",
   "types": "./src/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dominicbachmann/angular-typed-router.git",
+    "directory": "libs/eslint-plugin"
+  },
   "dependencies": {
     "tslib": "^2.3.0"
   }
