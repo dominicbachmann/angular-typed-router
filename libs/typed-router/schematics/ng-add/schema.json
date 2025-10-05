@@ -1,0 +1,26 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "$id": "add-angular-typed-router",
+  "title": "Add angular-typed-router to an existing workspace",
+  "type": "object",
+  "properties": {
+    "project": {
+      "type": "string",
+      "description": "The name of the project to add angular-typed-router to.",
+      "$default": {
+        "$source": "projectName"
+      }
+    },
+    "allowDirty": {
+      "type": "boolean",
+      "description": "Whether to allow to run even if there are uncommitted Git changes.",
+      "default": false
+    },
+    "migrate": {
+      "type": "boolean",
+      "description": "Run migration to replace usages of RouterLink and Router with TypedRouterLink and TypedRouter.",
+      "default": false,
+      "x-prompt": "Would you like to replace usages of RouterLink and Router with TypedRouterLink and TypedRouter?"
+    }
+  }
+}
