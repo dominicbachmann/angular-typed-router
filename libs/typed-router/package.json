@@ -1,6 +1,9 @@
 {
   "name": "angular-typed-router",
   "version": "0.1.0",
+  "scripts": {
+    "build-schematics": "tsc -p tsconfig.schematics.json"
+  },
   "peerDependencies": {
     "@angular/common": "^20.0.0",
     "@angular/core": "^20.0.0"
@@ -10,5 +13,9 @@
     "url": "https://github.com/dominicbachmann/angular-typed-router.git",
     "directory": "libs/typed-router"
   },
-  "sideEffects": false
+  "sideEffects": false,
+  "schematics": "./schematics/collection.json",
+  "ng-add": {
+    "save": "dependencies"
+  }
 }

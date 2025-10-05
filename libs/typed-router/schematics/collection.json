@@ -1,0 +1,15 @@
+{
+  "$schema": "../../../node_modules/@angular-devkit/schematics/collection-schema.json",
+  "schematics": {
+    "ng-add": {
+      "description": "Add angular-typed-router to the project.",
+      "factory": "./ng-add/index#ngAdd",
+      "schema": "./ng-add/schema.json"
+    },
+    "migrate": {
+      "description": "Migrate from @angular/router to angular-typed-router",
+      "factory": "./migrate/index#migrate",
+      "schema": "./migrate/schema.json"
+    }
+  }
+}

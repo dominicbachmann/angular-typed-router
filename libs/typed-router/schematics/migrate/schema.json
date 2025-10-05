@@ -1,0 +1,26 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "$id": "migrate-to-angular-typed-router",
+  "title": "Angular Typed Router Migration",
+  "type": "object",
+  "properties": {
+    "project": {
+      "type": "string",
+      "description": "The name of the project to migrate.",
+      "$default": {
+        "$source": "projectName"
+      }
+    },
+    "path": {
+      "type": "string",
+      "description": "Path to the project source files. If not specified, the project source root will be used.",
+      "format": "path"
+    },
+    "allowDirty": {
+      "type": "boolean",
+      "description": "Whether to allow the migration to run even if there are uncommitted Git changes.",
+      "default": false
+    }
+  },
+  "required": ["project"]
+}
