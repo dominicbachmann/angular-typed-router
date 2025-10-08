@@ -14,7 +14,7 @@ export const addDeclarationFile =
       project.extensions['projectType'] === ProjectType.Application
     ) {
       const projectRoot = project.root;
-      const augmentationFileName = 'angular-typed-router.d.ts';
+      const augmentationFileName = 'typed-router.d.ts';
       const declarationFilePath = join(projectRoot, augmentationFileName);
       // TODO: Check if app.routes.ts exists and if it has the correct export
       const augmentationFileContent = `import type { routes } from './src/app/app.routes';
@@ -23,7 +23,7 @@ declare module 'angular-typed-router' {
   interface UserTypedRoutes {
     routes: typeof routes;
   }
-  interface AllowedRouteParamValues {
+  interface RouteParamTypes {
 
   }
 }

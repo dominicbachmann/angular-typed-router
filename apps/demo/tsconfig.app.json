@@ -4,7 +4,7 @@
     "outDir": "../../dist/out-tsc",
     "types": []
   },
-  "include": ["src/**/*.ts", "angular-typed-router.d.ts"],
+  "include": ["src/**/*.ts", "typed-router.d.ts"],
   "exclude": [
     "jest.config.ts",
     "src/test-setup.ts",

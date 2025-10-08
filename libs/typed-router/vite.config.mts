@@ -22,6 +22,7 @@ export default defineConfig(() => ({
     },
     typecheck: {
       enabled: true,
+      tsconfig: 'tsconfig.spec.json',
     },
     browser: {
       enabled: true,

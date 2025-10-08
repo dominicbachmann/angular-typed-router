@@ -17,7 +17,8 @@ import { TypedRouter, TypedRouterLink } from 'angular-typed-router';
         <li>
           <a routerLink="/page2">Page 2</a>
           <ul>
-            <li>config
+            <li>
+              config
               <a routerLink="/page2/child">Child</a>
             </li>
           </ul>
@@ -39,7 +40,7 @@ import { TypedRouter, TypedRouterLink } from 'angular-typed-router';
           </ul>
         </li>
         <li>
-          <a routerLink="/with-param/124324">With Param</a>
+          <a routerLink="/with-param/home/else">With Param</a>
         </li>
       </ul>
     </nav>
@@ -56,6 +57,7 @@ export class App {
     this.router.navigateByUrl('/page3/lazy-child');
     this.router.navigate(['/', 'intermediate', 'child']);
     this.router.navigate(['/']);
-    this.router.navigateByUrl('/with-param/settings');
+    this.router.navigate(['/', 'with-param', 'home', 'else']);
+    this.router.navigateByUrl('/with-param/settings/something');
   }
 }

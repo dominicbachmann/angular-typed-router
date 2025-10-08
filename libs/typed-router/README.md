@@ -7,6 +7,7 @@ Type-safe ergonomic primitives on top of Angular's standalone router. Automatica
 ## Why
 
 Angular's router is powerful but untyped for URL literals – a misspelled path or an outdated segment only fails at runtime. This library lets your application declare routes once, then:
+
 - Navigate with `TypedRouter.navigateByUrl(path)` where `path` is validated at compile time.
 - Use `<a routerLink="...">` with type checking via an augmented `TypedRouterLink` directive.
 - Build command tuples with correct literal segments (`Commands` type).
@@ -14,6 +15,10 @@ Angular's router is powerful but untyped for URL literals – a misspelled path 
 No decorators, no custom builders, no code generation – just TypeScript type inference and interface augmentation.
 
 ## Installation
+
+`ng add angular-ryped-router` will set up the package and create a declaration file for you.
+
+Or install manually:
 
 ```bash
 npm install angular-typed-router
@@ -34,24 +39,24 @@ import { DashboardComponent } from './dashboard.component';
 
 export const appRoutes = [
   { path: 'dashboard', component: DashboardComponent },
-  { path: 'projects/:id', loadComponent: () => import('./project.component').then(m => m.ProjectComponent) },
-  { path: '**', redirectTo: 'dashboard' }
+  { path: 'projects/:id', loadComponent: () => import('./project.component').then((m) => m.ProjectComponent) },
+  { path: '**', redirectTo: 'dashboard' },
 ] as const satisfies Routes;
 ```
 
 2. Create the augmentation file so the library can “see” your routes:
 
 ```ts
-// angular-typed-router.d.ts (sibling to main.ts or inside src/ root)
+// typed-router.d.ts (sibling to main.ts or inside src/ root)
 import type { appRoutes } from './app/app.routes';
 
 declare module 'angular-typed-router' {
   interface UserTypedRoutes {
     routes: typeof appRoutes;
   }
-  // Customize route param types here
-  interface AllowedRouteParamValues {
-    ids: `${number}`;
+  // Customize route param types here, the keys of this interface match your route param names
+  interface RouteParamTypes {
+    id: `${number}`;
     // other params...
   }
 }
@@ -63,13 +68,14 @@ declare module 'angular-typed-router' {
 // tsconfig.app.json
 {
   "extends": "./tsconfig.json",
-  "compilerOptions": { },
+  "compilerOptions": {},
   "include": [
     "src/**/*.ts",
-    "angular-typed-router.d.ts" // <— add this line
+    "typed-router.d.ts" // <— add this line
   ]
 }
 ```
+
 If you have multiple tsconfigs, ensure the specific app tsconfig that drives the build/test includes the file.
 
 4. Use the typed router & link:
@@ -83,12 +89,13 @@ import { TypedRouter, Path } from 'angular-typed-router';
   template: `
     <a routerLink="dashboard">Dashboard</a>
     <a routerLink="projects/123">Project 123</a>
-  `
+  `,
 })
 export class NavComponent {
   private readonly router = inject(TypedRouter);
 
-  go(p: Path) { // p must be one of the inferred paths
+  go(p: Path) {
+    // p must be one of the inferred paths
     this.router.navigateByUrl(p);
   }
 
@@ -104,7 +111,7 @@ If you try `this.router.navigateByUrl('projcts/123')` (typo) or `<a routerLink="
 ## Exports
 
 ```ts
-import { TypedRouter, TypedRouterLink, Path, Commands, UserTypedRoutes } from 'angular-typed-router';
+import { TypedRouter, TypedRouterLink, Path, Commands, UserTypedRoutes, RouteParamTypes } from 'angular-typed-router';
 ```
 
 - `TypedRouter` – Extends Angular `Router`, overrides `navigateByUrl` & `navigate` signatures to accept `Path` / `Commands`.
@@ -113,6 +120,7 @@ import { TypedRouter, TypedRouterLink, Path, Commands, UserTypedRoutes } from 'a
 - `Commands` – Union of tuple command arrays representing valid `Router.navigate()` inputs (each static segment as a literal, each parameter position as `string`).
 - `UserTypedRoutes` – Empty interface you augment with your `routes` reference.
 - `ExtractPathsFromRoutes<Routes>` – Utility type if you need to compute from an arbitrary `Routes` array manually.
+- `RouteParamTypes` – Interface you can augment to specify types for route parameters by name (e.g. `id: ${number}`).
 
 ## How It Works
 
@@ -127,6 +135,7 @@ All compile-time only; nothing ships to runtime.
 ## Lazy Routes
 
 Works with any lazy route whose `loadChildren` resolves to:
+
 - `Promise<Route[]>`
 - `Promise<{ routes: Route[] }>` (Angular v17+ pattern)
 
@@ -141,49 +150,58 @@ Those child paths get prefixed (`admin/...`) in `Path` & `Commands`.
 ## Parameter Segments
 
 A pattern `projects/:id/details/:section` produces a `Path` variant like:
+
 ```
-'projects/' + string + '/details/' + string
+'projects/' + IdParamType + '/details/' + SectionParamType
 ```
+
 and a `Commands` tuple like:
+
 ```
-['projects', string, 'details', string]
+['projects', IdParamType, 'details', SectionParamType]
 ```
-You pass real runtime values for the `string` positions. Empty string values and values like 'param/still-param' cannot currently be prevented at the type level without hurting DX (see Limitations).
+
+You pass real runtime values for the `IdParamType` and `SectionParamType` positions. Empty string values and values like 'param/still-param' cannot currently be prevented at the type level without hurting DX (see Limitations).
 
 ## Usage Patterns
 
 Navigate by full path (typed):
+
 ```ts
 router.navigateByUrl('/dashboard');
 ```
+
 Navigate with commands array:
+
 ```ts
 router.navigate(['/', 'projects', someId]);
 ```
+
 Generate a `UrlTree`:
+
 ```ts
 router.createUrlTree(['/', 'projects', id]);
 ```
-Template links:
-```html
-<a routerLink="/projects/42">Project 42</a>
-<a [routerLink]="['/', 'projects', projectId]"></a>
-```
 
+Template links:
+
+```html
+<a routerLink="/projects/42">Project 42</a> <a [routerLink]="['/', 'projects', projectId]"></a>
+```
 
 ## Augmentation Placement
 
 Keep the augmentation in a `.d.ts` that is included by `tsconfig.app.json` (`include` array). If you see `Path` still as `never`, ensure:
+
 - The augmentation file is included.
 - The `routes` constant is `as const satisfies Routes`.
 - No circular import (augmentation file should only import the routes, nothing else runtime-heavy).
 
 ## Limitations & Tradeoffs
 
-| Concern | Status / Rationale                                                                    |
-|---------|---------------------------------------------------------------------------------------|
+| Concern                            | Status / Rationale                                                                    |
+| ---------------------------------- | ------------------------------------------------------------------------------------- |
 | `relativeTo` (relative navigation) | Not supported – all inferred `Path` / `Commands` are absolute. Use absolute commands. |
-
 
 ## ESLint Recommendation (Optional)
 
@@ -191,9 +209,9 @@ You can use `angular-typed-router-eslint` plugin to forbid untyped navigation ca
 
 ## Troubleshooting
 
-| Symptom | Fix |
-|---------|-----|
-| `Path` is `never` | Check augmentation file is included in tsconfig. |
+| Symptom               | Fix                                                            |
+| --------------------- | -------------------------------------------------------------- |
+| `Path` is `never`     | Check augmentation file is included in tsconfig.               |
 | Lazy children missing | Ensure promise resolves to `Route[]` or `{ routes: Route[] }`. |
 
 ## Contributing
@@ -205,4 +223,5 @@ PRs welcome.
 MIT
 
 ---
+
 Happy routing.

@@ -8,10 +8,8 @@ declare module 'angular-typed-router' {
   interface UserTypedRoutes {
     routes: typeof appRoutes;
   }
-  interface AllowedRouteParamValues {
-    params: 'home' | 'about' | 'contact' | 'user' | 'settings';
-    otherParams: 'something' | 'else';
-    ids: `${number}`,
+  interface RouteParamTypes {
+    param: 'home' | 'about' | 'contact' | 'user' | 'settings';
+    'other-param': 'something' | 'else';
   }
 }
-

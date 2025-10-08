@@ -1,18 +1,80 @@
 import { describe, it, expectTypeOf } from 'vitest';
+import type { Route, Routes } from '@angular/router';
 import type { Path, Commands } from './typed-routes';
 
-describe('typed-routes baseline (no augmentation)', () => {
-  it('Path resolves to never', () => {
-    expectTypeOf<Path>().toEqualTypeOf<never>();
+class C {}
+const lazyChildren = [{ path: 'sub', component: C }] as const satisfies Routes;
+
+const routes = [
+  { path: '', component: C },
+  { path: 'home', component: C },
+  { path: 'about', component: C },
+  { path: 'parent', component: C, children: [{ path: 'child', component: C }] },
+  {
+    path: 'lazy',
+    loadChildren: () => Promise.resolve(lazyChildren).then((m) => m),
+  },
+  { path: 'redirect', redirectTo: 'home', pathMatch: 'full' },
+  { path: 'struct', children: [{ path: 'leaf', component: C }] },
+  { path: 'user/:typed-routes', component: C },
+] as const satisfies readonly Route[];
+
+declare module './types/replace-params' {
+  interface RouteParamTypes {
+    'typed-routes': '123' | '456';
+  }
+}
+declare module './typed-routes' {
+  interface UserTypedRoutes {
+    routes: typeof routes;
+  }
+}
+
+describe('typed-routes augmented (with param values)', () => {
+  type ExpectedPath =
+    | '/'
+    | '/home'
+    | '/about'
+    | '/parent'
+    | '/parent/child'
+    | '/lazy/sub'
+    | '/redirect'
+    | '/struct/leaf'
+    | '/user/123'
+    | '/user/456';
+
+  it('Path equals precise union including expanded param routes', () => {
+    expectTypeOf<Path>().toEqualTypeOf<ExpectedPath>();
   });
 
-  it('Commands resolves to never (no navigable command segments)', () => {
-    expectTypeOf<Commands>().toEqualTypeOf<never>();
+  it('Path includes both expanded param variants', () => {
+    type UserPaths = Extract<Path, '/user/123' | '/user/456'>;
+    expectTypeOf<UserPaths>().toEqualTypeOf<'/user/123' | '/user/456'>();
   });
 
-  it('never is still assignable to string for Path (sanity)', () => {
-    // compile-time only check
-    const _check: string = (null as any as Path); // Path is never, so this line wouldn't compile if Path was something else
+  it('Path does not include raw colon param form', () => {
+    type Raw = Extract<Path, '/user/:id'>;
+    expectTypeOf<Raw>().toEqualTypeOf<never>();
+  });
+
+  type ExpectedCommands =
+    | ['/']
+    | ['/', 'home']
+    | ['/', 'about']
+    | ['/', 'parent']
+    | ['/', 'parent', 'child']
+    | ['/', 'lazy', 'sub']
+    | ['/', 'redirect']
+    | ['/', 'struct', 'leaf']
+    | ['/', 'user', '123']
+    | ['/', 'user', '456'];
+
+  it('Commands equals union of tuple command arrays including param expansions', () => {
+    expectTypeOf<Commands>().toEqualTypeOf<ExpectedCommands>();
+  });
+
+  it('Commands tuples all start with /', () => {
+    type AllValid = Commands extends readonly ['/', ...any[]] ? true : false;
+    expectTypeOf<AllValid>().toEqualTypeOf<true>();
   });
 });
-

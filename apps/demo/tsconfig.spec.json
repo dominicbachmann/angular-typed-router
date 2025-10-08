@@ -24,7 +24,7 @@
     "src/**/*.test.jsx",
     "src/**/*.spec.jsx",
     "src/**/*.d.ts",
-    "angular-typed-router.d.ts"
+    "typed-router.d.ts"
   ],
   "files": ["src/test-setup.ts"]
 }
