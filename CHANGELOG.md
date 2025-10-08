@@ -1,3 +1,13 @@
+## 0.1.1-3 (2025-10-08)
+
+### 🚀 Features
+
+- **typed-router:** add support for explicitly typing route params by their name ([a766959](https://github.com/dominicbachmann/angular-typed-router/commit/a766959))
+
+### ❤️ Thank You
+
+- dominicbachmann @dominicbachmann
+
 ## 0.1.1-2 (2025-10-05)
 
 ### 🚀 Features
