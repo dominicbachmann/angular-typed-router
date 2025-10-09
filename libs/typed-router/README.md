@@ -161,7 +161,7 @@ and a `Commands` tuple like:
 ['projects', IdParamType, 'details', SectionParamType]
 ```
 
-You pass real runtime values for the `IdParamType` and `SectionParamType` positions. Empty string values and values like 'param/still-param' cannot currently be prevented at the type level without hurting DX (see Limitations).
+You pass real runtime values for the `IdParamType` and `SectionParamType` positions.
 
 ## Usage Patterns
 
@@ -195,17 +195,16 @@ Keep the augmentation in a `.d.ts` that is included by `tsconfig.app.json` (`inc
 
 - The augmentation file is included.
 - The `routes` constant is `as const satisfies Routes`.
-- No circular import (augmentation file should only import the routes, nothing else runtime-heavy).
 
-## Limitations & Tradeoffs
+## Tradeoffs
 
-| Concern                            | Status / Rationale                                                                    |
-| ---------------------------------- | ------------------------------------------------------------------------------------- |
-| `relativeTo` (relative navigation) | Not supported – all inferred `Path` / `Commands` are absolute. Use absolute commands. |
+| Concern                            | Status / Rationale                                                                              |
+| ---------------------------------- |-------------------------------------------------------------------------------------------------|
+| `relativeTo` (relative navigation) | Not supported – all inferred `Path` / `Commands` are absolute. Use absolute paths and commands. |
 
 ## ESLint Recommendation (Optional)
 
-You can use `angular-typed-router-eslint` plugin to forbid untyped navigation calls.
+You can use `angular-typed-router-eslint` plugin to forbid untyped navigation calls and usage of `relativeTo`.
 
 ## Troubleshooting
 
