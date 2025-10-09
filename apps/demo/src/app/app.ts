@@ -1,10 +1,15 @@
 import { Component, inject } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { RouterLinkActive, RouterOutlet } from '@angular/router';
 import { TypedRouter, TypedRouterLink } from 'angular-typed-router';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, TypedRouterLink],
+  imports: [RouterOutlet, TypedRouterLink, RouterLinkActive],
+  styles: `
+    .active {
+      color: green;
+    }
+  `,
   template: `
     <nav>
       <ul>
@@ -24,7 +29,7 @@ import { TypedRouter, TypedRouterLink } from 'angular-typed-router';
           </ul>
         </li>
         <li>
-          <a routerLink="/page3">Page 3</a>
+          <a routerLink="/page3" routerLinkActive="active">Page 3</a>
           <ul>
             <li>
               <a routerLink="/page3/lazy-child">Lazy Child</a>

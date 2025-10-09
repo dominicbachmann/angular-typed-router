@@ -10,7 +10,7 @@ export const appRoutes = [
     component: Root,
   },
   {
-    path: 'page1/',
+    path: 'page1',
     loadComponent: () => import('./features/page1').then((m) => m.Page1),
   },
   {
