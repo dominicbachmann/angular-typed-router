@@ -1,3 +1,13 @@
+## 0.1.1-4 (2025-10-09)
+
+### 🩹 Fixes
+
+- **typed-router:** fix TypedRouterLink not providing RouterLink ([afaf5f0](https://github.com/dominicbachmann/angular-typed-router/commit/afaf5f0))
+
+### ❤️ Thank You
+
+- dominicbachmann @dominicbachmann
+
 ## 0.1.1-3 (2025-10-08)
 
 ### 🚀 Features
