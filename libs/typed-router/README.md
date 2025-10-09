@@ -126,7 +126,7 @@ import { TypedRouter, TypedRouterLink, Path, Commands, UserTypedRoutes, RoutePar
 
 1. You augment `UserTypedRoutes` with the literal `const` route array.
 2. Type utilities recursively walk the route tree (including lazily loaded routes via `loadChildren` returning `Route[]` or `{ routes }`).
-3. Each navigable route (component / loadComponent / redirectTo) contributes a path string. Param segments (`:id`) are replaced by `string` (currently unrestricted – see Limitations).
+3. Each navigable route (component / loadComponent / redirectTo) contributes a path string. Param segments (e.g. `:id`) can be typed through declaration merging of `RouteParamTypes`.
 4. Child paths are joined with parents to form final concrete path unions.
 5. A tuple transformation creates the `Commands` variants.
 
