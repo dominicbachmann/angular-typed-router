@@ -16,7 +16,7 @@ No decorators, no custom builders, no code generation – just TypeScript type i
 
 ## Installation
 
-`ng add angular-ryped-router` will set up the package and create a declaration file for you.
+`ng add angular-typed-router` will set up the package and create a declaration file for you.
 
 Or install manually:
 
