@@ -20,9 +20,7 @@ describe('ExtractPathsFromRoute', () => {
   it('structural parent without component not included, child included', () => {
     const r = {
       path: 'parent',
-      children: [
-        { path: 'child', component: C },
-      ],
+      children: [{ path: 'child', component: C }],
     } as const satisfies Route;
     expectTypeOf<ExtractPathsFromRoute<typeof r>>().toEqualTypeOf<'parent/child'>();
   });
@@ -31,7 +29,7 @@ describe('ExtractPathsFromRoute', () => {
     const r = {
       path: 'p',
       component: C,
-      children: [ { path: 'c', component: C } ],
+      children: [{ path: 'c', component: C }],
     } as const satisfies Route;
     expectTypeOf<ExtractPathsFromRoute<typeof r>>().toEqualTypeOf<'p' | 'p/c'>();
   });
@@ -39,7 +37,7 @@ describe('ExtractPathsFromRoute', () => {
   it('nested deeper structure accumulates segments', () => {
     const r = {
       path: 'a',
-      children: [ { path: 'b', children: [ { path: 'c', component: C } ] } ],
+      children: [{ path: 'b', children: [{ path: 'c', component: C }] }],
     } as const satisfies Route;
     expectTypeOf<ExtractPathsFromRoute<typeof r>>().toEqualTypeOf<'a/b/c'>();
   });
@@ -50,7 +48,7 @@ describe('ExtractPathsFromRoute', () => {
   });
 
   it('root empty structural path with child yields child path (no leading slash)', () => {
-    const r = { path: '', children: [ { path: 'dash', component: C } ] } as const satisfies Route;
+    const r = { path: '', children: [{ path: 'dash', component: C }] } as const satisfies Route;
     expectTypeOf<ExtractPathsFromRoute<typeof r>>().toEqualTypeOf<'dash'>();
   });
 
@@ -66,29 +64,41 @@ describe('ExtractPathsFromRoute', () => {
     const r = {
       path: 'mix',
       component: C,
-      children: [ { path: 'child', component: C } ],
+      children: [{ path: 'child', component: C }],
       loadChildren: () => makePromise([{ path: 'lazy', component: C }] as const),
     } as const satisfies Route;
-    expectTypeOf<ExtractPathsFromRoute<typeof r>>()
-      .toEqualTypeOf<'mix' | 'mix/child' | 'mix/lazy'>();
+    expectTypeOf<ExtractPathsFromRoute<typeof r>>().toEqualTypeOf<
+      'mix' | 'mix/child' | 'mix/lazy'
+    >();
   });
 
   it('explicit prefix argument prepends to all derived paths', () => {
     const r = { path: 'home', component: C } as const satisfies Route;
-    expectTypeOf<ExtractPathsFromRoute<typeof r, 'base'>>()
-      .toEqualTypeOf<'base/home'>();
+    expectTypeOf<ExtractPathsFromRoute<typeof r, 'base'>>().toEqualTypeOf<'base/home'>();
   });
 
   it('explicit prefix with empty path child collapses correctly', () => {
     const r = { path: '', component: C } as const satisfies Route;
-    expectTypeOf<ExtractPathsFromRoute<typeof r, 'base'>>()
-      .toEqualTypeOf<'base'>();
+    expectTypeOf<ExtractPathsFromRoute<typeof r, 'base'>>().toEqualTypeOf<'base'>();
   });
 
   it('structural parent with prefix only yields descendant prefixed paths', () => {
-    const r = { path: 'p', children: [ { path: 'c', component: C } ] } as const satisfies Route;
-    expectTypeOf<ExtractPathsFromRoute<typeof r, 'x'>>()
-      .toEqualTypeOf<'x/p/c'>();
+    const r = { path: 'p', children: [{ path: 'c', component: C }] } as const satisfies Route;
+    expectTypeOf<ExtractPathsFromRoute<typeof r, 'x'>>().toEqualTypeOf<'x/p/c'>();
+  });
+
+  it(':paramName segment preserved in raw form (no substitution here)', () => {
+    const r = { path: 'user/:id', component: C } as const satisfies Route;
+    expectTypeOf<ExtractPathsFromRoute<typeof r>>().toEqualTypeOf<'user/:id'>();
+  });
+
+  it(':paramName segments preserved across parent/child boundaries', () => {
+    const r = {
+      path: 'org/:org-id',
+      children: [{ path: 'project/:project-id', component: C }],
+    } as const satisfies Route;
+    expectTypeOf<ExtractPathsFromRoute<typeof r>>().toEqualTypeOf<
+      'org/:org-id/project/:project-id'
+    >();
   });
 });
-

@@ -1,7 +1,7 @@
 import { Route } from '@angular/router';
-import { PathToCommandTuple } from './types/path-to-command-tuple';
 import { ExtractPathsFromRoutes } from './types/extract-paths-from-routes';
-import { ExtractRawPathsFromRoutes } from './types/extract-raw-paths-from-routes';
+import { ReplaceParams } from './types/replace-params';
+import { PathToCommandTuple } from './types/path-to-command-tuple';
 import { RemoveTrailingSlash } from './types/remove-trailing-slash';
 
 /**
@@ -14,8 +14,9 @@ type ProvidedRoutes = UserTypedRoutes extends { routes: readonly Route[] }
   ? UserTypedRoutes['routes']
   : [];
 
-export type Path = RemoveTrailingSlash<`/${ExtractPathsFromRoutes<ProvidedRoutes>}`>;
+/** Canonical intermediate: every navigable path with `:paramName` markers preserved. */
+type RawPaths = ExtractPathsFromRoutes<ProvidedRoutes>;
 
-type RawCommandPath = ExtractRawPathsFromRoutes<ProvidedRoutes>;
+export type Path = RemoveTrailingSlash<`/${ReplaceParams<RawPaths>}`>;
 
-export type Commands = readonly ['/', ...PathToCommandTuple<RawCommandPath>];
+export type Commands = readonly ['/', ...PathToCommandTuple<RawPaths>];

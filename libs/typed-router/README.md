@@ -119,7 +119,6 @@ import { TypedRouter, TypedRouterLink, Path, Commands, UserTypedRoutes, RoutePar
 - `Path` – Union of every reachable concrete URL path produced from your route tree (includes parameterized expansions with `string` in place of `:param` segments).
 - `Commands` – Union of tuple command arrays representing valid `Router.navigate()` inputs (each static segment as a literal, each parameter position as `string`).
 - `UserTypedRoutes` – Empty interface you augment with your `routes` reference.
-- `ExtractPathsFromRoutes<Routes>` – Utility type if you need to compute from an arbitrary `Routes` array manually.
 - `RouteParamTypes` – Interface you can augment to specify types for route parameters by name (e.g. `id: ${number}`).
 
 ## How It Works

@@ -93,7 +93,7 @@ describe('typed-routes augmented (with param values)', () => {
 });
 
 describe('typed-routes branded param types', () => {
-  it('Commands carries the branded type at each param slot (not a template-literal wrapper)', () => {
+  it('Commands carries the branded type at each param slot', () => {
     type BrandedCommand = Extract<
       Commands,
       readonly ['/', 'org', any, 'project', any]
@@ -127,5 +127,32 @@ describe('typed-routes branded param types', () => {
     // @ts-expect-error — ProjectId is not assignable to OrgId at slot 2
     const cmd: Commands = ['/', 'org', projectId('wrong'), 'project', orgId('wrong')];
     void cmd;
+  });
+});
+
+describe('typed-routes branded param types in Path (string form)', () => {
+  it('Path includes the branded template-literal form', () => {
+    type BrandedPath = Extract<Path, `/org/${OrgId}/project/${ProjectId}`>;
+    expectTypeOf<BrandedPath>().toEqualTypeOf<`/org/${OrgId}/project/${ProjectId}`>();
+  });
+
+  it('accepts a Path built from brand constructors', () => {
+    const url: Path = `/org/${orgId('acme')}/project/${projectId('demo')}`;
+    void url;
+  });
+
+  it('rejects raw strings in branded slots', () => {
+    // @ts-expect-error — 'acme' is not assignable to OrgId
+    const url1: Path = `/org/acme/project/${projectId('demo')}`;
+    // @ts-expect-error — 'demo' is not assignable to ProjectId
+    const url2: Path = `/org/${orgId('acme')}/project/demo`;
+    void url1;
+    void url2;
+  });
+
+  it('rejects swapped brands (positional safety)', () => {
+    // @ts-expect-error — ProjectId is not assignable to OrgId at slot 2
+    const url: Path = `/org/${projectId('wrong')}/project/${orgId('wrong')}`;
+    void url;
   });
 });

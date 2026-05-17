@@ -1,10 +1,15 @@
 import { Route } from '@angular/router';
 import { IsNavigable } from './is-navigatable';
-import { ReplaceParams } from './replace-params';
 import { PathOrEmptyString } from './path-or-empty-string';
 import { ExtractLazyChildRoutes } from './extract-lazy-child-routes';
 import { JoinPathSegments } from './join-path-segments';
 
+/**
+ * Recursively extracts every navigable path from a single Route, preserving
+ * `:paramName` markers in their raw colon form. Substituting markers against
+ * `RouteParamTypes` is the consumer's job: see `ReplaceParams` for the string
+ * rendering and `PathToCommandTuple` for the tuple rendering.
+ */
 type ExtractChildren<
   Routes extends readonly Route[],
   Prefix extends string
@@ -14,19 +19,22 @@ type ExtractChildren<
     : never
   : never;
 
-export type ExtractPathsFromRoute<R extends Route, Prefix extends string = ''> =
+export type ExtractPathsFromRoute<
+  R extends Route,
+  Prefix extends string = ''
+> =
   | (IsNavigable<R> extends true
-  ? ReplaceParams<JoinPathSegments<Prefix, PathOrEmptyString<R>>>
-  : never)
+      ? JoinPathSegments<Prefix, PathOrEmptyString<R>>
+      : never)
   | (R['children'] extends readonly Route[]
-  ? ExtractChildren<
-    R['children'],
-    ReplaceParams<JoinPathSegments<Prefix, PathOrEmptyString<R>>>
-  >
-  : never)
+      ? ExtractChildren<
+          R['children'],
+          JoinPathSegments<Prefix, PathOrEmptyString<R>>
+        >
+      : never)
   | (R['loadChildren'] extends () => Promise<any>
-  ? ExtractChildren<
-    ExtractLazyChildRoutes<R>,
-    ReplaceParams<JoinPathSegments<Prefix, PathOrEmptyString<R>>>
-  >
-  : never);
+      ? ExtractChildren<
+          ExtractLazyChildRoutes<R>,
+          JoinPathSegments<Prefix, PathOrEmptyString<R>>
+        >
+      : never);

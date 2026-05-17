@@ -11,41 +11,40 @@ describe('ExtractPathsFromRoutes', () => {
       { path: 'home', component: C },
       { path: 'about', component: C },
     ] as const satisfies readonly Route[];
-    expectTypeOf<ExtractPathsFromRoutes<typeof routes>>()
-      .toEqualTypeOf<'home' | 'about'>();
+    expectTypeOf<ExtractPathsFromRoutes<typeof routes>>().toEqualTypeOf<
+      'home' | 'about'
+    >();
   });
 
-  it('param-only route omitted (replaced with never) alongside static path', () => {
+  it(':paramName route preserved in raw form alongside static path', () => {
     const routes = [
       { path: ':x', component: C },
       { path: 'static', component: C },
     ] as const satisfies readonly Route[];
-    expectTypeOf<ExtractPathsFromRoutes<typeof routes>>()
-      .toEqualTypeOf<'static'>();
+    expectTypeOf<ExtractPathsFromRoutes<typeof routes>>().toEqualTypeOf<':x' | 'static'>();
   });
 
   it('structural route contributes only its descendants', () => {
     const routes = [
-      { path: 'parent', children: [ { path: 'child', component: C } ] },
+      { path: 'parent', children: [{ path: 'child', component: C }] },
     ] as const satisfies readonly Route[];
-    expectTypeOf<ExtractPathsFromRoutes<typeof routes>>()
-      .toEqualTypeOf<'parent/child'>();
+    expectTypeOf<ExtractPathsFromRoutes<typeof routes>>().toEqualTypeOf<'parent/child'>();
   });
 
   it('route with component and children adds both parent and nested', () => {
     const routes = [
-      { path: 'dash', component: C, children: [ { path: 'deep', component: C } ] },
+      { path: 'dash', component: C, children: [{ path: 'deep', component: C }] },
     ] as const satisfies readonly Route[];
-    expectTypeOf<ExtractPathsFromRoutes<typeof routes>>()
-      .toEqualTypeOf<'dash' | 'dash/deep'>();
+    expectTypeOf<ExtractPathsFromRoutes<typeof routes>>().toEqualTypeOf<
+      'dash' | 'dash/deep'
+    >();
   });
 
   it('lazy loaded child routes are prefixed', () => {
     const routes = [
       { path: 'lazy', loadChildren: () => makePromise([{ path: 'sub', component: C }] as const) },
     ] as const satisfies readonly Route[];
-    expectTypeOf<ExtractPathsFromRoutes<typeof routes>>()
-      .toEqualTypeOf<'lazy/sub'>();
+    expectTypeOf<ExtractPathsFromRoutes<typeof routes>>().toEqualTypeOf<'lazy/sub'>();
   });
 
   it('empty root path component yields empty string among others', () => {
@@ -53,8 +52,7 @@ describe('ExtractPathsFromRoutes', () => {
       { path: '', component: C },
       { path: 'a', component: C },
     ] as const satisfies readonly Route[];
-    expectTypeOf<ExtractPathsFromRoutes<typeof routes>>()
-      .toEqualTypeOf<'' | 'a'>();
+    expectTypeOf<ExtractPathsFromRoutes<typeof routes>>().toEqualTypeOf<'' | 'a'>();
   });
 
   it('prefix parameter prepends to every extracted path', () => {
@@ -62,18 +60,20 @@ describe('ExtractPathsFromRoutes', () => {
       { path: 'home', component: C },
       { path: 'about', component: C },
     ] as const satisfies readonly Route[];
-    expectTypeOf<ExtractPathsFromRoutes<typeof routes, 'base'>>()
-      .toEqualTypeOf<'base/home' | 'base/about'>();
+    expectTypeOf<ExtractPathsFromRoutes<typeof routes, 'base'>>().toEqualTypeOf<
+      'base/home' | 'base/about'
+    >();
   });
 
-  it('combined mixed routes (structural + lazy + leaf)', () => {
+  it('combined mixed routes (structural + lazy + leaf + param)', () => {
     const routes = [
-      { path: 'parent', children: [ { path: 'child', component: C } ] },
+      { path: 'parent', children: [{ path: 'child', component: C }] },
       { path: 'leaf', component: C },
       { path: 'lazy', loadChildren: () => makePromise([{ path: 'deep', component: C }] as const) },
+      { path: 'user/:id', component: C },
     ] as const satisfies readonly Route[];
-    expectTypeOf<ExtractPathsFromRoutes<typeof routes>>()
-      .toEqualTypeOf<'parent/child' | 'leaf' | 'lazy/deep'>();
+    expectTypeOf<ExtractPathsFromRoutes<typeof routes>>().toEqualTypeOf<
+      'parent/child' | 'leaf' | 'lazy/deep' | 'user/:id'
+    >();
   });
 });
-
