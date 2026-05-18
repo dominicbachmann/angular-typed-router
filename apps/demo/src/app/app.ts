@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { RouterLinkActive, RouterOutlet } from '@angular/router';
 import { TypedRouter, TypedRouterLink } from 'angular-typed-router';
+import { asOrgId, asProjectId } from './types/branded-ids';
 
 @Component({
   selector: 'app-root',
@@ -47,6 +48,11 @@ import { TypedRouter, TypedRouterLink } from 'angular-typed-router';
         <li>
           <a routerLink="/with-param/home/else">With Param</a>
         </li>
+        <li>
+          <a [routerLink]="['/', 'orgs', acmeOrgId, 'projects', atlasProjectId]">
+            Acme / Atlas
+          </a>
+        </li>
       </ul>
     </nav>
     <router-outlet />
@@ -54,6 +60,9 @@ import { TypedRouter, TypedRouterLink } from 'angular-typed-router';
 })
 export class App {
   private readonly router = inject(TypedRouter);
+
+  readonly acmeOrgId = asOrgId('acme');
+  readonly atlasProjectId = asProjectId('atlas');
 
   navigate() {
     this.router.navigateByUrl('/page1');
@@ -64,5 +73,12 @@ export class App {
     this.router.navigate(['/']);
     this.router.navigate(['/', 'with-param', 'home', 'else']);
     this.router.navigateByUrl('/with-param/settings/something');
+    this.router.navigate([
+      '/',
+      'orgs',
+      asOrgId('contoso'),
+      'projects',
+      asProjectId('mercury'),
+    ]);
   }
 }
