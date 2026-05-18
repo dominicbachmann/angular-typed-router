@@ -1,6 +1,6 @@
 import { describe, it, expectTypeOf } from 'vitest';
 import type { Route } from '@angular/router';
-import type { IsNavigable } from './is-navigatable';
+import type { IsNavigable } from './is-navigable';
 
 // Helper no-op component placeholder
 class DummyComponent {}

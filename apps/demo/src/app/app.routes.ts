@@ -43,6 +43,11 @@ export const appRoutes = [
       import('./features/with-param').then((m) => m.WithParam),
   },
   {
+    path: 'orgs/:org-id/projects/:project-id',
+    loadComponent: () =>
+      import('./features/org-project').then((m) => m.OrgProject),
+  },
+  {
     path: '**',
     redirectTo: 'page3',
   },
