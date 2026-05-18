@@ -1,22 +1,19 @@
 import { Route } from '@angular/router';
-import { ExtractPathsFromRoutes } from './types/extract-paths-from-routes';
-import { ReplaceParams } from './types/replace-params';
-import { PathToCommandTuple } from './types/path-to-command-tuple';
+import { ExtractRawPaths } from './types/extract-raw-paths';
+import { RawPathToUrl } from './types/raw-path-to-url';
+import { RawPathToCommands } from './types/raw-path-to-commands';
 import { RemoveTrailingSlash } from './types/remove-trailing-slash';
 
-/**
- * Merge target. Consumer augments this interface:
- * declare module 'angular-typed-router' { interface UserTypedRoutes { routes: typeof routes; } }`
- */
+/** Augmentation target. Consumers declare their routes here:
+ *  `declare module 'angular-typed-router' { interface UserTypedRoutes { routes: typeof routes } }` */
 export interface UserTypedRoutes {}
 
 type ProvidedRoutes = UserTypedRoutes extends { routes: readonly Route[] }
   ? UserTypedRoutes['routes']
   : [];
 
-/** Canonical intermediate: every navigable path with `:paramName` markers preserved. */
-type RawPaths = ExtractPathsFromRoutes<ProvidedRoutes>;
+type RawPaths = ExtractRawPaths<ProvidedRoutes>;
 
-export type Path = RemoveTrailingSlash<`/${ReplaceParams<RawPaths>}`>;
+export type Path = RemoveTrailingSlash<`/${RawPathToUrl<RawPaths>}`>;
 
-export type Commands = readonly ['/', ...PathToCommandTuple<RawPaths>];
+export type Commands = readonly ['/', ...RawPathToCommands<RawPaths>];

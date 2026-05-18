@@ -26,9 +26,10 @@ const routes = [
   { path: 'struct', children: [{ path: 'leaf', component: C }] },
   { path: 'user/:typed-routes', component: C },
   { path: 'org/:org-id/project/:project-id', component: C },
+  { path: 'blog/:unknown-param', component: C },
 ] as const satisfies readonly Route[];
 
-declare module './types/replace-params' {
+declare module './types/route-param-types' {
   interface RouteParamTypes {
     'typed-routes': '123' | '456';
     'org-id': OrgId;
@@ -154,5 +155,17 @@ describe('typed-routes branded param types in Path (string form)', () => {
     // @ts-expect-error — ProjectId is not assignable to OrgId at slot 2
     const url: Path = `/org/${projectId('wrong')}/project/${orgId('wrong')}`;
     void url;
+  });
+});
+
+describe('typed-routes undeclared :param drops the route', () => {
+  it('Path does not include the route containing an undeclared :param', () => {
+    type Hit = Extract<Path, `/blog/${string}`>;
+    expectTypeOf<Hit>().toEqualTypeOf<never>();
+  });
+
+  it('Commands has no tuple matching ["/", "blog", ...] for an undeclared :param route', () => {
+    type Hit = Extract<Commands, readonly ['/', 'blog', any]>;
+    expectTypeOf<Hit>().toEqualTypeOf<never>();
   });
 });
