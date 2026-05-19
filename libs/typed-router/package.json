@@ -1,6 +1,22 @@
 {
   "name": "angular-typed-router",
   "version": "0.1.0",
+  "description": "Type-safe Angular Router. Compile-time Path union and typed navigation commands inferred from your Routes array. Zero runtime cost.",
+  "keywords": [
+    "angular",
+    "router",
+    "typescript",
+    "type-safe",
+    "typed",
+    "routing",
+    "angular-router"
+  ],
+  "author": "Dominic Bachmann",
+  "license": "MIT",
+  "homepage": "https://github.com/dominicbachmann/angular-typed-router#readme",
+  "bugs": {
+    "url": "https://github.com/dominicbachmann/angular-typed-router/issues"
+  },
   "scripts": {
     "build-schematics": "tsc -p tsconfig.schematics.json"
   },
