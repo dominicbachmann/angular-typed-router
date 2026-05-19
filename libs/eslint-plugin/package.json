@@ -1,6 +1,6 @@
 {
   "name": "angular-typed-router-eslint",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "ESLint rules that complement angular-typed-router by forbidding patterns that bypass its type safety.",
   "keywords": [
     "angular",

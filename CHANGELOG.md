@@ -1,3 +1,14 @@
+# 1.0.0 (2026-05-19)
+
+### 🩹 Fixes
+
+- **eslint-plugin:** register peer dependencies in package.json ([bc4b59e](https://github.com/dominicbachmann/angular-typed-router/commit/bc4b59e))
+- **typed-router:** update peer dependencies in package.json to angular 21 ([6156a6a](https://github.com/dominicbachmann/angular-typed-router/commit/6156a6a))
+
+### ❤️ Thank You
+
+- dominicbachmann @dominicbachmann
+
 ## 0.1.1-4 (2025-10-09)
 
 ### 🩹 Fixes

@@ -1,6 +1,6 @@
 {
   "name": "angular-typed-router",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Type-safe Angular Router. Compile-time Path union and typed navigation commands inferred from your Routes array. Zero runtime cost.",
   "keywords": [
     "angular",
