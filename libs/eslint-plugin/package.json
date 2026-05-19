@@ -1,6 +1,22 @@
 {
   "name": "angular-typed-router-eslint",
   "version": "0.1.0",
+  "description": "ESLint rules that complement angular-typed-router by forbidding patterns that bypass its type safety.",
+  "keywords": [
+    "angular",
+    "router",
+    "eslint",
+    "eslint-plugin",
+    "eslintplugin",
+    "typescript",
+    "angular-typed-router"
+  ],
+  "author": "Dominic Bachmann",
+  "license": "MIT",
+  "homepage": "https://github.com/dominicbachmann/angular-typed-router/tree/main/libs/eslint-plugin#readme",
+  "bugs": {
+    "url": "https://github.com/dominicbachmann/angular-typed-router/issues"
+  },
   "type": "commonjs",
   "main": "./src/index.js",
   "types": "./src/index.d.ts",
