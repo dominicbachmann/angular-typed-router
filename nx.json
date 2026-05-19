@@ -72,6 +72,7 @@
     }
   },
   "release": {
+    "releaseTagPattern": "v{version}",
     "version": {
       "preVersionCommand": "npx nx run-many -t build"
     }
