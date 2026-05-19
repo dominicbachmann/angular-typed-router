@@ -1,7 +1,5 @@
 # angular-typed-router
 
-## Attention: Still in experimental phase
-
 Type-safe ergonomic primitives on top of Angular's standalone router. Automatically derive a compile‑time union of valid route URL strings (`Path`) and strongly typed navigation command tuples (`Commands`) from the consumer application's `Routes` definition – without generating code or adding runtime weight.
 
 ## Why

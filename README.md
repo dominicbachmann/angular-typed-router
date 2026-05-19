@@ -2,8 +2,6 @@
 
 Type-safe navigation for Angular. One source of truth (your `Routes` array) → inferred `Path` union + strongly typed `navigate` command tuples. No codegen, no runtime cost, just TypeScript. ✨
 
-This is an early release. Please try it out and file issues. 🚧
-
 ## Why
 - ✅ Catch broken / misspelled route paths at compile time
 - 🛠️ Refactors become safer (remove a route → instant red squiggles)
