@@ -1,3 +1,18 @@
+# 2.0.0 (2026-07-03)
+
+### ⚠️ Breaking Changes
+
+- **typed-router:** require Angular 22, peer dependencies raised to ^22.0.0 ([d87f32b](https://github.com/dominicbachmann/angular-typed-router/commit/d87f32b))
+
+### 🩹 Fixes
+
+- **typed-router:** drop unused @angular/common peer dependency ([d87f32b](https://github.com/dominicbachmann/angular-typed-router/commit/d87f32b))
+- **eslint-plugin:** move @typescript-eslint/utils from peer to regular dependency ([d87f32b](https://github.com/dominicbachmann/angular-typed-router/commit/d87f32b))
+
+### ❤️ Thank You
+
+- dominicbachmann @dominicbachmann
+
 # 1.0.0 (2026-05-19)
 
 ### 🩹 Fixes
