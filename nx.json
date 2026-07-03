@@ -22,9 +22,11 @@
       "cache": true,
       "inputs": [
         "default",
+        "^default",
         "{workspaceRoot}/.eslintrc.json",
         "{workspaceRoot}/.eslintignore",
-        "{workspaceRoot}/eslint.config.mjs"
+        "{workspaceRoot}/eslint.config.mjs",
+        "{workspaceRoot}/tools/eslint-rules/**/*"
       ]
     },
     "@nx/angular:package": {
@@ -72,9 +74,12 @@
     }
   },
   "release": {
-    "releaseTagPattern": "v{version}",
     "version": {
       "preVersionCommand": "npx nx run-many -t build"
+    },
+    "releaseTag": {
+      "pattern": "v{version}"
     }
-  }
+  },
+  "analytics": false
 }

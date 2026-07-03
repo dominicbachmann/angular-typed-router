@@ -8,11 +8,16 @@
   "targets": {
     "build": {
       "executor": "@angular/build:application",
-      "outputs": ["{options.outputPath}"],
+      "outputs": [
+        "{options.outputPath}"
+      ],
+      "defaultConfiguration": "production",
       "options": {
         "outputPath": "dist/apps/demo",
         "browser": "apps/demo/src/main.ts",
-        "polyfills": ["zone.js"],
+        "polyfills": [
+          "zone.js"
+        ],
         "tsConfig": "apps/demo/tsconfig.app.json",
         "assets": [
           {
@@ -20,7 +25,9 @@
             "input": "apps/demo/public"
           }
         ],
-        "styles": ["apps/demo/src/styles.css"]
+        "styles": [
+          "apps/demo/src/styles.css"
+        ]
       },
       "configurations": {
         "production": {
@@ -43,12 +50,12 @@
           "extractLicenses": false,
           "sourceMap": true
         }
-      },
-      "defaultConfiguration": "production"
+      }
     },
     "serve": {
       "continuous": true,
       "executor": "@angular/build:dev-server",
+      "defaultConfiguration": "development",
       "configurations": {
         "production": {
           "buildTarget": "demo:build:production"
@@ -56,8 +63,7 @@
         "development": {
           "buildTarget": "demo:build:development"
         }
-      },
-      "defaultConfiguration": "development"
+      }
     },
     "extract-i18n": {
       "executor": "@angular/build:extract-i18n",
@@ -70,9 +76,11 @@
     },
     "test": {
       "executor": "@nx/vitest:test",
-      "outputs": ["{options.reportsDirectory}"],
+      "outputs": [
+        "{options.reportsDirectory}"
+      ],
       "options": {
-        "reportsDirectory": "../../coverage/apps/demo"
+        "reportsDirectory": "{projectRoot}/../../coverage/apps/demo"
       }
     },
     "serve-static": {
