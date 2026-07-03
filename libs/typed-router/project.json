@@ -6,7 +6,10 @@
   "projectType": "library",
   "release": {
     "version": {
-      "manifestRootsToUpdate": ["{projectRoot}", "dist/{projectRoot}"],
+      "manifestRootsToUpdate": [
+        "{projectRoot}",
+        "dist/{projectRoot}"
+      ],
       "currentVersionResolver": "git-tag",
       "fallbackCurrentVersionResolver": "disk"
     }
@@ -15,14 +18,21 @@
   "targets": {
     "build": {
       "executor": "nx:run-commands",
+      "dependsOn": [
+        "build-lib"
+      ],
       "options": {
-        "commands": ["npm run build-schematics --prefix ./libs/typed-router"]
-      },
-      "dependsOn": ["build-lib"]
+        "commands": [
+          "npm run build-schematics --prefix ./libs/typed-router"
+        ]
+      }
     },
     "build-lib": {
       "executor": "@nx/angular:package",
-      "outputs": ["{workspaceRoot}/dist/{projectRoot}"],
+      "outputs": [
+        "{workspaceRoot}/dist/{projectRoot}"
+      ],
+      "defaultConfiguration": "production",
       "options": {
         "project": "libs/typed-router/ng-package.json",
         "tsConfig": "libs/typed-router/tsconfig.lib.json"
@@ -32,8 +42,7 @@
           "tsConfig": "libs/typed-router/tsconfig.lib.prod.json"
         },
         "development": {}
-      },
-      "defaultConfiguration": "production"
+      }
     },
     "nx-release-publish": {
       "options": {
@@ -42,9 +51,11 @@
     },
     "test": {
       "executor": "@nx/vitest:test",
-      "outputs": ["{options.reportsDirectory}"],
+      "outputs": [
+        "{options.reportsDirectory}"
+      ],
       "options": {
-        "reportsDirectory": "../../coverage/libs/typed-router"
+        "reportsDirectory": "{projectRoot}/../../coverage/libs/typed-router"
       }
     },
     "lint": {
